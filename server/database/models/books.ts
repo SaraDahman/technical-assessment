@@ -1,7 +1,8 @@
 import sequelize from "../connection";
 import { DataTypes } from "sequelize";
+import { IBook } from "../../interfaces/models";
 
-const Book = sequelize.define('Book', {
+const Book = sequelize.define<IBook>('Book', {
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
