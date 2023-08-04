@@ -2,9 +2,10 @@ import express, { Request, Response } from "express";
 import compression from "compression";
 import cookieParser from "cookie-parser";
 import { join } from 'path';
-import dotenv from 'dotenv';
+import router from "./routes";
+import { CustomError } from "./helpers";
+import { errorHandler } from "./middleware";
 
-dotenv.config();
 const app = express();
 const { PORT, NODE_ENV } = process.env
 
@@ -16,6 +17,8 @@ app.use([
     cookieParser()
 ])
 
+app.use('/api/v1', router)
+
 app.set('port', PORT || 8080);
 
 if (NODE_ENV === 'production') {
@@ -25,6 +28,13 @@ if (NODE_ENV === 'production') {
         res.sendFile(join(__dirname, '..', 'client', 'dist', 'index.html'));
     })
 }
+
+app.use((req: Request, res: Response, next) => {
+    const error = new CustomError(400, 'Not Found');
+    next(error);
+});
+
+app.use(errorHandler);
 
 
 export default app;
