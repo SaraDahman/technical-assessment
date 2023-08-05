@@ -32,6 +32,9 @@ export const findBookByTitle = async (title: string) => {
 
 
 export const deleteBookById = async (id: number) => {
+    return await Book.destroy({
+        where: { id },
+    })
 }
 
 export const updateBookById = async (id: number) => {

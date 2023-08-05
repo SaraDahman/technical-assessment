@@ -44,7 +44,8 @@ const Book = sequelize.define<IBook>('Book', {
         {
             fields: ['category']
         }
-    ]
+    ],
+    paranoid: true
 });
 
 
