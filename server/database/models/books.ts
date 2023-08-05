@@ -36,6 +36,15 @@ const Book = sequelize.define<IBook>('Book', {
         type: DataTypes.DATE,
         allowNull: false,
     },
+}, {
+    indexes: [
+        {
+            fields: ['title']
+        },
+        {
+            fields: ['category']
+        }
+    ]
 });
 
 
