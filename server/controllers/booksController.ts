@@ -18,16 +18,21 @@ export const addOneBook = async (req: any, res: Response, next: NextFunction) =>
     }
 }
 
-export const filterBooks = async (req: any, res: Response) => {
-    res.send('this is search book')
+export const getAllBooks = async (req: any, res: Response, next: NextFunction) => {
+    try {
+        const userId = req.user.id;
+        const response = await booksService.getAllBooks(userId);
+
+        res.status(200).send(response);
+
+    } catch (error) {
+        next(error);
+    }
+
 }
 
 export const getOneBook = async (req: any, res: Response) => {
     res.send('this is get one book')
-}
-
-export const getAllBooks = async (req: any, res: Response) => {
-    res.send('this is get all books')
 }
 
 export const deleteBook = async (req: any, res: Response) => {
@@ -37,3 +42,8 @@ export const deleteBook = async (req: any, res: Response) => {
 export const updateBook = async (req: any, res: Response) => {
     res.send('this is update a book')
 }
+
+export const filterBooks = async (req: any, res: Response) => {
+    res.send('this is search book')
+}
+

@@ -1,5 +1,5 @@
 import { IBook } from "../interfaces";
-import { createBook } from "../repositories/booksReposity";
+import { createBook, findAllBooks } from "../repositories/booksRepository";
 
 const addOneBook = async (data: IBook, userId: number) => {
     const book = await createBook({
@@ -10,10 +10,13 @@ const addOneBook = async (data: IBook, userId: number) => {
     return { message: 'Book Added Successfully', data: book };
 }
 
-const getOneBook = async () => {
+const getAllBooks = async (userId: number) => {
+    const books = await findAllBooks(userId);
+
+    return { message: 'Books Retrieved Successfully', data: books }
 }
 
-const getAllBooks = async () => {
+const getOneBook = async (bookId: number) => {
 }
 
 const filterBooks = async () => {
