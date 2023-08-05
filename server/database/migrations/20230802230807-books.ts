@@ -51,10 +51,22 @@ module.exports = {
         type: Sequelize.DATE,
         allowNull: true,
       }
-    });
+    })
+      .then(() => {
+        return queryInterface.addIndex('Books', ['title']);
+      })
+      .then(() => {
+        return queryInterface.addIndex('Books', ['category']);
+      });
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Books');
+    await queryInterface.dropTable('Books')
+      .then(() => {
+        return queryInterface.removeIndex('Books', ['title']);
+      })
+      .then(() => {
+        return queryInterface.removeIndex('Books', ['category']);
+      });
   }
 };

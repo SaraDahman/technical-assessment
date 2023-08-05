@@ -38,10 +38,16 @@ module.exports = {
         type: Sequelize.DATE,
         allowNull: true,
       }
-    });
+    })
+      .then(() => {
+        return queryInterface.addIndex('Users', ['email'])
+      })
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Users');
+    await queryInterface.dropTable('Users')
+      .then(() => {
+        return queryInterface.removeIndex('Users', ['email'])
+      })
   }
 };

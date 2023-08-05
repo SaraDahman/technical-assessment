@@ -33,6 +33,14 @@ const User = sequelize.define<IUser>('User', {
         type: DataTypes.DATE,
         allowNull: false,
     },
+
+}, {
+    indexes: [
+        {
+            unique: true,
+            fields: ['email']
+        }
+    ]
 });
 
 
