@@ -19,7 +19,7 @@ app.use([
 
 app.use('/api/v1', router)
 
-app.set('port', PORT || 8080);
+app.set('port', PORT || 3000);
 
 if (NODE_ENV === 'production') {
     app.use(express.static(join(__dirname, '../client/dist')));
@@ -30,7 +30,7 @@ if (NODE_ENV === 'production') {
 }
 
 app.use((req: Request, res: Response, next) => {
-    const error = new CustomError(400, 'Not Found');
+    const error = new CustomError(404, 'Not Found');
     next(error);
 });
 
