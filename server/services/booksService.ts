@@ -1,6 +1,6 @@
 import { CustomError } from "../helpers";
 import { IBook } from "../interfaces";
-import { createBook, findAllBooks, findBookById, deleteBookById } from "../repositories/booksRepository";
+import { createBook, findAllBooks, findBookById, deleteBookById, updateBookById } from "../repositories/booksRepository";
 
 const addOneBook = async (data: IBook, userId: number) => {
     const book = await createBook({
@@ -33,11 +33,15 @@ const deleteBook = async (bookId: number) => {
     return deletedBook;
 }
 
-const filterBooks = async (title: string) => {
+const updateBook = async (data: IBook, bookId: number) => {
+    const [updatedBook] = await updateBookById(data, bookId);
+
+    if (!updatedBook) throw new CustomError(400, 'Book Doesn\'t Exist');
+
+    return updatedBook;
 }
 
-
-const updateBook = async (bookId: number) => {
+const filterBooks = async (title: string) => {
 }
 
 

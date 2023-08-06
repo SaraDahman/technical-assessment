@@ -1,5 +1,6 @@
 import { Book } from "../database/models";
 import { Op } from "sequelize";
+import { IBook } from "../interfaces";
 
 export const createBook = async (newBook: any) => {
     return await Book.create(newBook);
@@ -37,7 +38,12 @@ export const deleteBookById = async (id: number) => {
     })
 }
 
-export const updateBookById = async (id: number) => {
+export const updateBookById = async (data: IBook, id: number) => {
+    return await Book.update({
+        ...data
+    }, {
+        where: { id }
+    });
 }
 
 
