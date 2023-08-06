@@ -23,11 +23,11 @@ const signUp = async ({ firstName, lastName, email, password }: ISignup) => {
 const signIn = async ({ email, password }: ISignIn) => {
     const user = await findUserByEmail(email);
 
-    if (!user) throw new CustomError(400, 'Email Doesn\'t exist');
+    if (!user) throw new CustomError(400, 'Invalid Credentials');
 
     const confirmPassword = await bcrypt.compare(password, user.password);
 
-    if (!confirmPassword) throw new CustomError(400, 'Incorrect Password');
+    if (!confirmPassword) throw new CustomError(400, 'Invalid Credentials');
 
     const token = generateToken(user.id, user.email);
 
