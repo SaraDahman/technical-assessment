@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { addBookValidation } from "../validation";
 import booksService from "../services/booksService";
-import { CustomError } from "../helpers";
 import { IRequest } from "../interfaces";
 import { validateParams } from "../helpers";
 
@@ -16,8 +15,7 @@ export const addOneBook =
                 .json({ message: 'Book Added Successfully', data: book });
 
         } catch (error: any) {
-            if (error.name === 'ValidationError') next(new CustomError(400, error.message));
-            else next(error);
+            next(error);
         }
     }
 
@@ -68,7 +66,17 @@ export const deleteBook =
 
 export const updateBook =
     async (req: any, res: Response, next: NextFunction) => {
-        res.send('this is update a book')
+        try {
+            const bookId = req.params.id;
+            validateParams(bookId);
+
+            const data = await addBookValidation(req.body);
+            const book = await booksService.updateBook(data, bookId)
+
+            res.status(200).send({ message: 'Book Updated Successfully' })
+        } catch (error: any) {
+            next(error);
+        }
     }
 
 
