@@ -1,61 +1,3 @@
-<script lang="ts">
-import Vue from 'vue';
-import axios from 'axios';
-import '../styles/forms.css';
-
-export default Vue.extend({
-  data: () => ({
-    loading: false,
-    valid: true,
-    firstName: '',
-    lastName: '',
-    email: '',
-    password: '',
-    show: false,
-
-    rules: {
-      required: (value: string) => !!value || 'Required',
-      isEmail: (value: string) =>
-        /.+@.+\..+/.test(value) || 'E-mail must be valid',
-      password: (value: string) =>
-        (value && value.length >= 8) || 'Min 8 characters',
-    },
-  }),
-  methods: {
-    async validate() {
-      const signUpForm = (
-        this.$refs.registerForm as Vue & {
-          validate: () => boolean;
-        }
-      ).validate();
-
-      if (signUpForm) {
-        this.signUp();
-      }
-    },
-
-    async signUp() {
-      const userData = {
-        email: this.email,
-        password: this.password,
-        firstName: this.firstName,
-        lastName: this.lastName,
-      };
-
-      try {
-        this.loading = true;
-        const { data } = await axios.post('/api/v1/auth/signUp', userData);
-        this.$toast.success(data.message);
-        this.loading = false;
-      } catch (error: any) {
-        this.$toast.error(error.response.data.message);
-        this.loading = false;
-      }
-    },
-  },
-});
-</script>
-
 <template>
   <v-app class="px-10 py-10">
     <h2 class="greeting">Welcome to the website</h2>
@@ -129,3 +71,73 @@ export default Vue.extend({
     </v-form>
   </v-app>
 </template>
+<script lang="ts">
+import Vue from 'vue';
+import axios from 'axios';
+import { mapMutations, mapGetters } from 'vuex';
+
+import '../styles/forms.css';
+
+export default Vue.extend({
+  data() {
+    return {
+      loading: false,
+      valid: true,
+      firstName: '',
+      lastName: '',
+      email: '',
+      password: '',
+      show: false,
+
+      rules: {
+        required: (value: string) => !!value || 'Required',
+        isEmail: (value: string) =>
+          /.+@.+\..+/.test(value) || 'E-mail must be valid',
+        password: (value: string) =>
+          (value && value.length >= 8) || 'Min 8 characters',
+      },
+    };
+  },
+  created() {
+    if (this.user) this.$router.push('/dashboard');
+  },
+  computed: {
+    ...mapGetters(['user']),
+  },
+  methods: {
+    ...mapMutations(['setUser']),
+    async validate() {
+      const signUpForm = (
+        this.$refs.registerForm as Vue & {
+          validate: () => boolean;
+        }
+      ).validate();
+
+      if (signUpForm) {
+        this.signUp();
+      }
+    },
+
+    async signUp() {
+      const userData = {
+        email: this.email,
+        password: this.password,
+        firstName: this.firstName,
+        lastName: this.lastName,
+      };
+
+      try {
+        this.loading = true;
+        const { data } = await axios.post('/api/v1/auth/signUp', userData);
+        this.$toast.success(data.message);
+        this.setUser(data.user);
+        this.loading = false;
+        this.$router.push('/dashboard');
+      } catch (error: any) {
+        this.$toast.error(error.response.data.message);
+        this.loading = false;
+      }
+    },
+  },
+});
+</script>
