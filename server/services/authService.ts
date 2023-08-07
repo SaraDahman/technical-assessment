@@ -6,22 +6,22 @@ import { generateToken } from "../helpers";
 
 
 const signUp = async ({ firstName, lastName, email, password }: ISignup) => {
-    const user = await findUserByEmail(email);
+    const result = await findUserByEmail(email, '');
 
-    if (user) throw new CustomError(400, 'Email Already In Use');
+    if (result) throw new CustomError(400, 'Email Already In Use');
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const result = await createUser({ firstName, lastName, email, password: hashedPassword });
+    const user = await createUser({ firstName, lastName, email, password: hashedPassword });
 
-    const token = generateToken(result.id, result.email);
+    const token = await generateToken(user.id, user.email);
 
-    return token;
+    return { token, user };
 };
 
 
 const signIn = async ({ email, password }: ISignIn) => {
-    const user = await findUserByEmail(email);
+    const user = await findUserByEmail(email, '');
 
     if (!user) throw new CustomError(400, 'Invalid Credentials');
 
@@ -29,13 +29,21 @@ const signIn = async ({ email, password }: ISignIn) => {
 
     if (!confirmPassword) throw new CustomError(400, 'Invalid Credentials');
 
-    const token = generateToken(user.id, user.email);
+    const token = await generateToken(user.id, user.email);
 
-    return token;
+    return { token, user };
+};
+
+
+const getUser = async (email: string) => {
+    const user = await findUserByEmail(email, 'password');
+    if (!user) throw new CustomError(400, 'No User exists with the email');
+    return user
 };
 
 
 export default {
     signUp,
     signIn,
+    getUser
 }
