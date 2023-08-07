@@ -5,6 +5,7 @@ import '../styles/forms.css';
 
 export default Vue.extend({
   data: () => ({
+    loading: false,
     valid: true,
     email: '',
     password: '',
@@ -38,12 +39,14 @@ export default Vue.extend({
       };
 
       try {
+        this.loading = true;
         const { data } = await axios.post('/api/v1/auth/signIn', userData);
         this.$toast.success(data.message);
+        this.loading = false;
+        this.$router.push('/dashboard');
       } catch (error: any) {
-        console.log(error);
-
         this.$toast.error(error.response.data.message);
+        this.loading = false;
       }
     },
   },
@@ -90,9 +93,11 @@ export default Vue.extend({
           <v-btn
             x-large
             block
-            :disabled="!valid"
+            :disabled="loading || !valid"
+            :loading="loading"
             color="#4DD0E1"
             @click="validate"
+            append-icon="mdi-eye"
             >Sign in</v-btn
           >
         </v-col>
