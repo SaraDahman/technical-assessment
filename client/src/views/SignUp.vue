@@ -45,7 +45,6 @@
             :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
             :rules="[rules.required, rules.password]"
             :type="show ? 'text' : 'password'"
-            name="input-10-1"
             label="Password"
             hint="At least 8 characters"
             @click:append="show = !show"

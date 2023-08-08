@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-main>
-      <div v-if="loading">loading ...</div>
+      <Loader v-if="loading" />
       <router-view v-else />
     </v-main>
   </v-app>
@@ -10,6 +10,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import { mapGetters, mapActions } from 'vuex';
+import Loader from './components/Loader.vue';
 
 export default Vue.extend({
   name: 'App',
@@ -25,6 +26,9 @@ export default Vue.extend({
   },
   async created() {
     await this.fetchUser();
+  },
+  components: {
+    Loader,
   },
 });
 </script>
