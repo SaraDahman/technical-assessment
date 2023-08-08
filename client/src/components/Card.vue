@@ -1,25 +1,19 @@
 <template>
   <v-card>
-    <v-img
-      class="align-end text-white"
-      height="300"
-      src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
-      cover
-    >
+    <v-img class="align-end text-white" height="300" :src="data.image" contain>
     </v-img>
-    <v-card-title>Top 10 Australian beaches</v-card-title>
-    <v-card-subtitle class="pt-4"> Number 10 </v-card-subtitle>
+    <v-card-title>{{ data.title }}</v-card-title>
+    <v-card-subtitle class="pt-4"> by {{ data.author }} </v-card-subtitle>
     <v-card-text>
       <p>
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Animi
-        inventore consectetur esse...
+        {{ data.description.substring(0, 20) }}
       </p>
     </v-card-text>
 
     <v-card-actions>
       <v-btn
         color="#4DD0E1"
-        @click="() => $router.push({ name: 'oneBook', params: '5' })"
+        @click="() => $router.push({ name: 'oneBook', params: data.id })"
       >
         See More
       </v-btn>
@@ -34,6 +28,9 @@ import router from '@/router';
 import Vue from 'vue';
 
 export default Vue.extend({
-  data: () => ({}),
+  data() {
+    return {};
+  },
+  props: ['data'],
 });
 </script>
