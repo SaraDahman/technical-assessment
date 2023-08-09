@@ -3,17 +3,24 @@
   <v-container v-else-if="error">
     Something went wrong, try again later
   </v-container>
-  <v-card v-else>
+  <v-card v-else class="py-10 test">
+    <v-text-field
+      class="mx-4"
+      text
+      label="Search"
+      prepend-inner-icon="mdi-magnify"
+      solo-inverted
+    ></v-text-field>
     <v-tabs color="deep-purple accent-4" left>
       <v-tab>Landscape</v-tab>
       <v-tab>City</v-tab>
       <v-tab>Abstract</v-tab>
 
       <v-tab-item v-for="n in 3" :key="n" :disabled="disabled">
-        <v-container class="test">
+        <v-container>
           <v-row v-if="!books.length">You have no books ...</v-row>
           <v-row v-else>
-            <v-col v-for="book in books" :key="book.id" cols="4">
+            <v-col v-for="book in books" :key="book.id" cols="3">
               <Card :data="book" />
             </v-col>
           </v-row>
@@ -68,8 +75,7 @@ export default Vue.extend({
 
 <style>
 .test {
-  height: 706px;
-  max-height: 706px;
+  height: 755px;
   overflow: auto;
   box-shadow: none;
 }
