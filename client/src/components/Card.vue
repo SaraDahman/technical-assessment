@@ -1,8 +1,16 @@
 <template>
   <v-card>
-    <v-img class="align-end text-white" height="300" :src="data.image" contain>
+    <v-img
+      class="align-end text-white"
+      height="300"
+      gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.6)"
+      :src="data.image"
+      cover
+    >
+      <v-card-title style="color: #fff; font-size: 1.8rem">
+        {{ data.title }}
+      </v-card-title>
     </v-img>
-    <v-card-title>{{ data.title }}</v-card-title>
     <v-card-subtitle class="pt-4"> by {{ data.author }} </v-card-subtitle>
     <v-card-text>
       <p>

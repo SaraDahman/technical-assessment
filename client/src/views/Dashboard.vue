@@ -9,11 +9,14 @@
         sticky
       >
         <v-list-item class="px-2">
-          <v-list-item-avatar>
-            <v-img src="https://randomuser.me/api/portraits/men/85.jpg"></v-img>
+          <v-list-item-avatar color="#ddd">
+            {{ user.firstName[0].toUpperCase()
+            }}{{ user.lastName[0].toUpperCase() }}
           </v-list-item-avatar>
 
-          <v-list-item-title>John Leider</v-list-item-title>
+          <v-list-item-title
+            >{{ user.firstName }} {{ user.lastName }}</v-list-item-title
+          >
 
           <v-btn icon @click.stop="mini = !mini">
             <v-icon>mdi-chevron-left</v-icon>
