@@ -4,6 +4,7 @@ import Books from '../components/Books.vue';
 import Archived from '../components/Archived.vue';
 import AddBook from '../components/AddBook.vue';
 import OneBook from '../components/OneBook.vue';
+import NotFound from '../views/NotFound.vue';
 
 
 Vue.use(VueRouter)
@@ -46,6 +47,10 @@ const routes: Array<RouteConfig> = [
       }
     ]
   },
+  {
+    path: '*',
+    component: NotFound,
+  }
 
 ]
 
