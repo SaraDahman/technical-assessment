@@ -109,7 +109,8 @@ export default Vue.extend({
       try {
         await this.$router.push({ name: path });
       } catch (error) {
-        this.$toast('already in this page');
+        // do nothing
+        // this.$toast('already in this page');
       }
     },
 
