@@ -9,19 +9,19 @@
       text
       label="Search"
       prepend-inner-icon="mdi-magnify"
-      solo-inverted
+      v-model="search"
     ></v-text-field>
     <v-tabs color="deep-purple accent-4" left>
       <v-tab>Landscape</v-tab>
       <v-tab>City</v-tab>
       <v-tab>Abstract</v-tab>
 
-      <v-tab-item v-for="n in 3" :key="n" :disabled="disabled">
+      <v-tab-item v-for="n in 3" :key="n">
         <v-container>
           <v-row v-if="!books.length">You have no books ...</v-row>
           <v-row v-else>
-            <v-col v-for="book in books" :key="book.id" cols="3">
-              <Card :data="book" />
+            <v-col v-for="book in books" :key="book.id" cols="4">
+              <Card :data="book" :removeBook="removeBook" />
             </v-col>
           </v-row>
         </v-container>
@@ -43,6 +43,7 @@ interface IProps {
   error: number;
   tab: null | number;
   loading: boolean;
+  search: string;
 }
 
 export default Vue.extend({
@@ -53,6 +54,7 @@ export default Vue.extend({
       books: [],
       error: 0,
       loading: true,
+      search: '',
     };
   },
   async created() {
@@ -69,6 +71,11 @@ export default Vue.extend({
   components: {
     Card,
     Loader,
+  },
+  methods: {
+    removeBook(id: number) {
+      this.books = this.books.filter((e) => e.id !== id);
+    },
   },
 });
 </script>
