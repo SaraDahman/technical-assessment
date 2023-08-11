@@ -1,6 +1,13 @@
 import { CustomError } from "../helpers";
 import { IBook } from "../interfaces";
-import { createBook, findAllBooks, findBookById, deleteBookById, updateBookById } from "../repositories/booksRepository";
+import {
+    createBook,
+    findAllBooks,
+    findBookById,
+    deleteBookById,
+    updateBookById,
+    filterBooksByTitleAndCategory,
+} from "../repositories/booksRepository";
 
 const addOneBook = async (data: IBook, userId: number) => {
     const book = await createBook({
@@ -11,8 +18,9 @@ const addOneBook = async (data: IBook, userId: number) => {
     return book;
 }
 
-const getAllBooks = async (userId: number) => {
-    const books = await findAllBooks(userId);
+const getAllBooks = async (userId: number, paranoid: boolean, deleted: boolean) => {
+
+    const books = await findAllBooks(userId, paranoid, deleted);
 
     return books;
 }
@@ -25,8 +33,8 @@ const getOneBook = async (bookId: number) => {
     return book;
 }
 
-const deleteBook = async (bookId: number) => {
-    const deletedBook = await deleteBookById(bookId);
+const deleteBook = async (bookId: number, force: boolean) => {
+    const deletedBook = await deleteBookById(bookId, force);
 
     if (!deletedBook) throw new CustomError(400, 'Book Doesn\'t Exist');
 
@@ -41,8 +49,12 @@ const updateBook = async (data: IBook, bookId: number) => {
     return updatedBook;
 }
 
-const filterBooks = async (title: string) => {
-}
+const filterBooks =
+    async (title: string, category: string, page: number, paranoid: boolean, deleted: boolean) => {
+
+        const books = await filterBooksByTitleAndCategory(title, category, page, paranoid, deleted)
+        return books
+    }
 
 
 export default {
