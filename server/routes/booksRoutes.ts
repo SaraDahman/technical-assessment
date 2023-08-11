@@ -12,9 +12,9 @@ const router = express.Router();
 
 router.post('/', addOneBook);
 router.get('/', getAllBooks);
+router.get('/filter', filterBooks);
 router.get('/:id', getOneBook);
 router.delete('/:id', deleteBook);
 router.put('/:id', updateBook);
-router.get('/filter', filterBooks);
 
 export default router;

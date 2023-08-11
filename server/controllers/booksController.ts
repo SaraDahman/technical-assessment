@@ -21,9 +21,11 @@ export const addOneBook =
 
 export const getAllBooks =
     async (req: any, res: Response, next: NextFunction) => {
+        const { paranoid, deleted } = req.query;
+
         try {
             const userId = req.user.id;
-            const data = await booksService.getAllBooks(userId);
+            const data = await booksService.getAllBooks(userId, paranoid === 'true', deleted === 'true');
 
             res.status(200)
                 .send({ message: 'Books Retrieved Successfully', data });
@@ -51,10 +53,12 @@ export const getOneBook =
 
 export const deleteBook =
     async (req: any, res: Response, next: NextFunction) => {
+        const { force } = req.query
+
         try {
             const bookId = req.params.id;
             validateParams(bookId);
-            await booksService.deleteBook(+bookId);
+            await booksService.deleteBook(+bookId, force === 'true');
 
             res.status(200)
                 .send({ message: 'Book Deleted Successfully' });
@@ -82,6 +86,14 @@ export const updateBook =
 
 export const filterBooks =
     async (req: any, res: Response, next: NextFunction) => {
-        res.send('this is search book')
+
+        try {
+            const { title, category, page, paranoid, deleted } = req.query;
+            const data = await booksService.filterBooks(title, category, page, paranoid === 'true', deleted === 'true');
+
+            res.status(200).json({ data })
+        } catch (error) {
+            next(error);
+        }
     }
 
