@@ -25,7 +25,7 @@
       {{ data.description }}
     </v-card-text>
 
-    <v-card-actions>
+    <v-card-actions v-if="type === 'archive'">
       <v-btn
         color="#4DD0E1"
         text
@@ -41,7 +41,16 @@
         :loading="loading"
         :disabled="loading"
       >
-        Delete
+        archive
+      </v-btn>
+    </v-card-actions>
+    <v-card-actions v-if="type === 'delete'">
+      <v-btn color="#4DD0E1" text @click="retrieveBook" :disabled="loading">
+        retrieve
+      </v-btn>
+
+      <v-btn color="red" text @click="dialog = true" :disabled="loading">
+        delete
       </v-btn>
     </v-card-actions>
     <!-- this is the dialog -->
@@ -66,7 +75,7 @@ export default Vue.extend({
       loading: false,
     };
   },
-  props: ['data', 'removeBook'],
+  props: ['data', 'removeBook', 'type'],
   components: {
     Dialog,
   },
@@ -78,13 +87,34 @@ export default Vue.extend({
       this.dialog = false;
       try {
         this.loading = true;
-        const { data } = await axios.delete(`/api/v1/books/${this.data.id}`);
+        const { data } = await axios.delete(
+          `/api/v1/books/${this.data.id}?force=${this.type === 'delete'}`
+        );
         this.loading = false;
         this.removeBook(this.data.id);
         this.$toast(data.message);
       } catch (error) {
         //
         this.$toast.error('error');
+      }
+    },
+    async retrieveBook() {
+      const book = {
+        ...this.data,
+        deletedAt: null,
+      };
+
+      try {
+        this.loading = true;
+
+        const { data } = await axios.put(`/api/v1/books/${this.data.id}`, book);
+
+        this.loading = false;
+        this.removeBook(this.data.id);
+
+        this.$toast.success('Book Retrieved');
+      } catch (error) {
+        console.log(error);
       }
     },
   },

@@ -155,6 +155,7 @@ export default Vue.extend({
           this.loading = false;
           this.reset();
           this.$toast.success(data.message);
+          this.$router.push({ name: 'books' });
         } catch (error) {
           //
           this.$toast.error('something went wrong');
