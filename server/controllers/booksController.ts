@@ -86,10 +86,11 @@ export const updateBook =
 
 export const filterBooks =
     async (req: any, res: Response, next: NextFunction) => {
+        const userId = req.user.id;
 
         try {
             const { title, category, page, paranoid, deleted } = req.query;
-            const data = await booksService.filterBooks(title, category, page, paranoid === 'true', deleted === 'true');
+            const data = await booksService.filterBooks(+userId, title, category, page, paranoid === 'true', deleted === 'true');
 
             res.status(200).json({ data })
         } catch (error) {

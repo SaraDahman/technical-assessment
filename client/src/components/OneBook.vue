@@ -78,22 +78,16 @@
     </v-row>
   </v-card>
 </template>
+
 <script lang="ts">
 import Vue from 'vue';
 import Loader from './Loader.vue';
 import axios from 'axios';
-import { IBook } from '@/interfaces/IBook';
+import { IOneBook } from '@/interfaces/IOneBook';
+import categories from '@/constants/categoriesList';
 
 export default Vue.extend({
-  data(): {
-    book: IBook | null;
-    loading: boolean;
-    pageLoading: boolean;
-    items: string[];
-    imageFile: any;
-    imageUrl: string;
-    rules: any[];
-  } {
+  data(): IOneBook {
     return {
       book: null,
       imageFile: null,
@@ -101,16 +95,7 @@ export default Vue.extend({
       loading: false,
       pageLoading: true,
       rules: [(value: string) => !!value || 'Required'],
-      items: [
-        'Romance',
-        'Comedy',
-        'Horror',
-        'Fiction',
-        'Historical',
-        'Scientific',
-        'Mystery',
-        'Other',
-      ],
+      items: categories,
     };
   },
   components: {

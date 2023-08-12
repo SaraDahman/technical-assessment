@@ -76,33 +76,25 @@
 import Vue from 'vue';
 import '../styles/forms.css';
 import axios from 'axios';
+import categories from '@/constants/categoriesList';
+import { IAddBook } from '../interfaces/IAddBook';
 
 export default Vue.extend({
-  data() {
+  data(): IAddBook {
     return {
       title: '',
       author: '',
       description: '',
-      image: null,
+      category: '',
       imageUrl: null,
-      url: '',
-      preview: '',
+      image: null,
       loading: false,
       rules: [(value: string) => !!value || 'Required'],
-      category: null,
-      items: [
-        'Romance',
-        'Comedy',
-        'Horror',
-        'Fiction',
-        'Historical',
-        'Scientific',
-        'Mystery',
-        'Other',
-      ],
+      items: categories,
     };
   },
   methods: {
+    // to validate the values of the form
     validate() {
       const isValid = (
         this.$refs.form as Vue & {
@@ -113,6 +105,7 @@ export default Vue.extend({
         this.submitData();
       }
     },
+    // to empty the form
     reset() {
       (
         this.$refs.form as Vue & {
@@ -120,6 +113,7 @@ export default Vue.extend({
         }
       ).reset();
     },
+    // upload the image file and receive a link set it to 'imageUrl'
     async uploadFile() {
       try {
         if (this.image) {
@@ -137,6 +131,7 @@ export default Vue.extend({
         this.$toast.error(error.response.data.message);
       }
     },
+
     async submitData() {
       const bookData = {
         title: this.title,
@@ -151,13 +146,11 @@ export default Vue.extend({
         try {
           this.loading = true;
           const { data } = await axios.post('/api/v1/books', bookData);
-          console.log(data);
           this.loading = false;
           this.reset();
           this.$toast.success(data.message);
           this.$router.push({ name: 'books' });
         } catch (error) {
-          //
           this.$toast.error('something went wrong');
           this.loading = false;
         }

@@ -50,9 +50,9 @@ const updateBook = async (data: IBook, bookId: number) => {
 }
 
 const filterBooks =
-    async (title: string, category: string, page: number, paranoid: boolean, deleted: boolean) => {
+    async (userId: number, title: string, category: string, page: number, paranoid: boolean, deleted: boolean) => {
 
-        const books = await filterBooksByTitleAndCategory(title, category, page, paranoid, deleted)
+        const books = await filterBooksByTitleAndCategory(userId, title, category, page, paranoid, deleted)
         return books
     }
 

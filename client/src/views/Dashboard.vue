@@ -53,9 +53,6 @@
               </v-list-item-content>
             </v-list-item>
           </v-list>
-          <!-- <div class="pa-2">
-            <v-btn block color="#4DD0E1"> Logout </v-btn>
-          </div> -->
         </template>
       </v-navigation-drawer>
 
