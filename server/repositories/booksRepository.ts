@@ -36,7 +36,7 @@ export const findBookById = async (id: number) => {
 
 
 export const filterBooksByTitleAndCategory =
-    async (title: string, category: string, page: number, paranoid: boolean, deleted: boolean) => {
+    async (userId: number, title: string, category: string, page: number, paranoid: boolean, deleted: boolean) => {
         let offset;
 
         if (page > 1 && title) offset = 1
@@ -46,6 +46,7 @@ export const filterBooksByTitleAndCategory =
             title: {
                 [Op.iLike]: `%${title}%`
             },
+            userId
         }
         if (category !== 'All') {
             where = {

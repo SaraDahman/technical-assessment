@@ -66,10 +66,11 @@
 <script lang="ts">
 import Vue from 'vue';
 import Dialog from './Dialog.vue';
+import { ICard } from '../interfaces/ICard';
 import axios from 'axios';
 
 export default Vue.extend({
-  data() {
+  data(): ICard {
     return {
       dialog: false,
       loading: false,
@@ -113,8 +114,8 @@ export default Vue.extend({
         this.removeBook(this.data.id);
 
         this.$toast.success('Book Retrieved');
-      } catch (error) {
-        console.log(error);
+      } catch (error: any) {
+        this.$toast.error(error.response.data.message);
       }
     },
   },

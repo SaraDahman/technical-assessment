@@ -57,28 +57,12 @@
 import Vue from 'vue';
 import axios from 'axios';
 import Card from './Card.vue';
-import { IBook } from '../interfaces/IBook';
+import { IBooks } from '../interfaces/IBooks';
 import Loader from './Loader.vue';
 import categories from '../constants/categoriesList';
 
-interface IProps {
-  disabled: boolean;
-  books: IBook[];
-  error: number;
-  tab: null | number;
-  loading: boolean;
-  search: string;
-  active: number;
-  categories: string[];
-  timeoutId: number | null;
-  contentLoading: boolean;
-  category: string;
-  page: number;
-  count: number;
-}
-
 export default Vue.extend({
-  data(): IProps {
+  data(): IBooks {
     return {
       tab: null,
       disabled: true,
@@ -138,9 +122,8 @@ export default Vue.extend({
         this.contentLoading = false;
         this.books = data.data.rows;
         this.count = data.data.count;
-        console.log(data.data);
-      } catch (error) {
-        console.log(error);
+      } catch (error: any) {
+        this.$toast.error(error.response.data.message);
       }
     },
   },
